@@ -1,1 +1,100 @@
 /* CSS declarations go here */
+
+body {
+    color: #222222;
+    font-size: 1em;
+    font-family: "Open Sans", sans-serif;
+    background: #ecf0f1;
+}
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+.header {
+    width: 100%;
+    text-align: center;
+    background-color: #3498db;
+    padding: 40px;
+}
+.header p {
+    font-family: Times;
+    margin: 0px;
+    color: white;
+}
+.heading {
+    color: #FFF1C2;
+    font-family: "Helvetica Neue", sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 70px;
+    text-shadow: 0px 3px 0px #FFCF33;
+    margin: 0px;
+    margin-top: 20px;
+    padding: 0px;
+}
+.passage {
+    padding-left: 2em;
+    padding-right: 2em;
+    max-width: 38em;
+    margin-left: auto;
+    margin-right: auto;
+}
+.passage .title {
+    max-width: 19em;
+    margin-top: 2em;
+}
+.passage p {
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+.passage ul {
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+.passage img {
+    width: 100%;
+    margin: 5px;
+}
+a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #2980b9;
+}
+a:hover {
+    color: #2980b9;
+}
+table {
+    display: block;
+    margin: 10px;
+}
+table th {
+    background-color: #2ecc71;
+    color: white;
+    padding: 20px 30px;
+    text-align: center;
+}
+table td {
+    padding: 20px 30px;
+    width: 100%;
+}
+.step {
+    border: 1px solid;
+    padding: 10px;
+}
+.step h3 {
+    color: #f1c40f;
+}
+textarea {
+    resize: none;
+}
+.footer {
+    margin-top: 50px;
+    background-color: #594F49;
+    text-align: center;
+    padding: 40px 40px 40px 40px;
+    color: white;
+}
+.footer p {
+    font-weight: bold;
+}
