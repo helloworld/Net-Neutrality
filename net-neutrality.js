@@ -16,6 +16,12 @@ if (Meteor.isClient) {
 
             Meteor.call('convertStreetAddress', streetAddress, function(e, r) {
                 locationObject = r;
+                Meteor.call('fetchDistrictsFromService', locationObject, function(e, r) {
+                    districtObject = r;
+                    console.log(districtObject);
+                    contact["legislatorInfo"] = districtObject;
+                    Session.setDefault("contactInfo", contact);
+                });
             });
         }
     });
@@ -34,5 +40,16 @@ if (Meteor.isServer) {
             return x.results[0].geometry.location;
 
         },
+        fetchDistrictsFromService: function(locationObject) {
+            var CONGRESSAPIKEY = "YOUR API KEY";
+            var url = "https://congress.api.sunlightfoundation.com/legislators/locate?latitude=" + locationObject.lat + "&longitude=" + locationObject.lng + "&apikey=" + CONGRESSAPIKEY;
+            //synchronous GET
+            var result = HTTP.call("GET", url);
+
+            toEval = "var x=" + result.content;
+            eval(toEval);
+            console.log(x, x.results, x.count);
+            return [x.results, x.count];
+        }
     });
 }
