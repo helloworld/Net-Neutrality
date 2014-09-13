@@ -1,5 +1,15 @@
 if (Meteor.isClient) {
 
+    Router.configure({
+        layoutTemplate: 'layout',
+    });
+
+    Router.map(function() {
+        this.route('home', {
+            path: '/'
+        });
+    });
+
     Deps.autorun(function() {
         if (Session.get("contactInfo") != undefined) {
             contact = Session.get("contactInfo");
@@ -52,6 +62,33 @@ if (Meteor.isClient) {
         }
     });
 
+    Template.legislatorInfo.events({
+        'click #placeCall': function(event) {
+            var domEl = event.currentTarget;
+            var phone = $(domEl).attr("data-phoneNumber");
+            var firstName = $(domEl).attr("data-firstName");
+            var lastName = $(domEl).attr("data-lastName");
+            var state = $(domEl).attr("data-state");
+            var chamber = $(domEl).attr("data-chamber");
+            Meteor.call("placeCall", phone, firstName, lastName, state, chamber, function(e, r) {
+                console.log(r);
+            });
+        },
+        'click #email': function(event) {
+            var domEl = event.currentTarget;
+            var email = $(domEl).attr("data-email");
+            var firstName = $(domEl).attr("data-firstName");
+            var lastName = $(domEl).attr("data-lastName");
+            var user = Session.get("contactInfo")
+            var message = "I am concerned about Net Neutrality";
+
+            Meteor.call("sendEmail", email, firstName, lastName, user, message, function(e, r) {
+                console.log(r);
+            })
+        }
+
+    });
+
     Template.legislatorInfo.rendered = function() {
         ! function(d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -68,9 +105,34 @@ if (Meteor.isClient) {
 }
 
 if (Meteor.isServer) {
+
+    Meteor.startup(function() {
+        process.env.MAIL_URL = 'smtp://userName:passWord@smtp.sendgrid.net:587';
+    });
+
+    Router.map(function() {
+        this.route('placeCallXML', {
+            where: 'server',
+            path: '/legislators/:phoneNumber/:chamber/:firstName/:lastName/:state',
+
+            action: function() {
+                var phoneNumber = this.params.phoneNumber;
+                var chamber = this.params.chamber;
+                var firstName = this.params.firstName;
+                var lastName = this.params.lastName;
+                var state = this.params.state;
+
+                this.response.writeHead(200, {
+                    'Content-Type': 'text/html'
+                });
+                this.response.end("<Response><Say>Thank you for advocating for Net Neutrality. You are about to be connected to your " + chamber + " representative " + firstName + " " + lastName + " from the State of " + state + ".</Say><Dial>" + phoneNumber + "</Dial></Response>");
+            }
+        });
+    });
+
     Meteor.methods({
         convertStreetAddress: function(streetAddress) {
-            var GOOGLEAPIKEY = "YOUR API KEY";
+            var GOOGLEAPIKEY = "KEY";
             var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + streetAddress + "&key=" + GOOGLEAPIKEY;
             //synchronous GET
             var result = HTTP.call("GET", url);
@@ -81,7 +143,7 @@ if (Meteor.isServer) {
 
         },
         fetchDistrictsFromService: function(locationObject) {
-            var CONGRESSAPIKEY = "YOUR API KEY";
+            var CONGRESSAPIKEY = "KEY";
             var url = "https://congress.api.sunlightfoundation.com/legislators/locate?latitude=" + locationObject.lat + "&longitude=" + locationObject.lng + "&apikey=" + CONGRESSAPIKEY;
             //synchronous GET
             var result = HTTP.call("GET", url);
@@ -90,6 +152,54 @@ if (Meteor.isServer) {
             eval(toEval);
             console.log(x, x.results, x.count);
             return [x.results, x.count];
+        },
+        sendMessage: function() {
+            ACCOUNT_SID = "KEY";
+            AUTH_TOKEN = "KEY";
+
+            var result = Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/' + ACCOUNT_SID + '/Messages/', {
+                params: {
+                    From: "2027602988",
+                    To: "7034624169",
+                    Body: "Helloworld"
+                },
+                auth: ACCOUNT_SID + ":" + AUTH_TOKEN
+            });
+
+            return result;
+        },
+        placeCall: function(phone, firstName, lastName, state, chamber) {
+            ACCOUNT_SID = "KEY";
+            AUTH_TOKEN = "KEY";
+
+            console.log("PHONELKJS DLKFJ " + phone);
+
+            console.log("neutral.meteor.com/legislators/" + phone + "/" + chamber + "/" + firstName + "/" + lastName + "/" + state);
+
+            var result = Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/' + ACCOUNT_SID + '/Calls/', {
+                params: {
+                    From: "2027602988",
+                    To: "7034624169",
+                    Url: "http://neutral.meteor.com/legislators/" + phone + "/" + chamber + "/" + firstName + "/" + lastName + "/" + state
+                },
+                auth: ACCOUNT_SID + ":" + AUTH_TOKEN
+
+            }, function(e, r) {
+                console.log(e, r);
+            });
+
+            console.log("end")
+
+            return result;
+        },
+        sendEmail: function(email, firstName, lastName, user, message) {
+            Email.send({
+                from: user.firstName + "@neutral.meteor.com",
+                to: email,
+                subject: "Maintain Net Neutrality",
+                text: message
+            });
+
         }
     });
 }

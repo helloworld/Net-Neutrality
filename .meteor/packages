@@ -7,6 +7,7 @@ meteor-platform
 autopublish
 insecure
 http
-mrt:twilio-meteor
 mrt:moment
+email
+iron:router
 

@@ -2,9 +2,13 @@
     <title>netneutrality</title>
 </head>
 
-<body>
-    {{>home}}
-</body>
+<template name="layout">
+
+    <body>
+        {{>yield}}
+    </body>
+</template>
+
 
 <template name="home">
     <div class="passage">
@@ -69,6 +73,8 @@
                 {{first_name}} {{last_name}}
                 <a href="http://facebook.com/{{facebook_id}}" target="_blank">Go to his facebook </a>
                 <a href="https://twitter.com/intent/tweet?screen_name={{twitter_id}}&text=I%20think%20that%20you%20should%20support20%23NetNeutrality" class="twitter-mention-button">Tweet to @{{twitter_id}}</a>
+                <button type="button" id="placeCall" data-phoneNumber="{{phone}}" data-firstName="{{first_name}}" data-lastName="{{last_name}}" data-chamber="{{chamber}}" data-state="{{state}}">Place call</button>
+                <button type="button" id="email" data-email="{{oc_email}}" data-firstName="{{first_name}}" data-lastName="{{last_name}}">Send Email</button>
 
 
             </div>
