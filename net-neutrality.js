@@ -1,11 +1,28 @@
 if (Meteor.isClient) {
 
+    Deps.autorun(function() {
+        if (Session.get("contactInfo") != undefined) {
+            contact = Session.get("contactInfo");
+            $("#firstName").val(contact["firstName"]);
+            $("#lastName").val(contact["lastName"]);
+            $("#streetAddress").val(contact["streetAddress"]);
+            $("#zipCode").val(contact["zipCode"]);
+        };
+    });
+
+
     Template.contactInfo.events({
         'click #submitContactInfo': function() {
-            firstName = $("#firstName").val();
-            lastName = $("#lastName").val();
-            streetAddress = $("#streetAddress").val();
-            zipCode = $("#zipCode").val();
+            // firstName = $("#firstName").val();
+            // lastName = $("#lastName").val();
+            // streetAddress = $("#streetAddress").val();
+            // zipCode = $("#zipCode").val();
+
+            firstName = "sad"
+            lastName = "sdf"
+            streetAddress = "13141 Rose Petal Cir"
+            zipCode = "20171"
+
 
             var contact = {};
             contact["firstName"] = firstName;
@@ -20,11 +37,34 @@ if (Meteor.isClient) {
                     districtObject = r;
                     console.log(districtObject);
                     contact["legislatorInfo"] = districtObject;
-                    Session.setDefault("contactInfo", contact);
+                    Session.set("contactInfo", contact);
                 });
             });
         }
     });
+
+    Template.legislatorInfo.helpers({
+        contactInfoSet: function() {
+            return Session.get("contactInfo") != undefined;
+        },
+        legislator: function() {
+            return Session.get("contactInfo").legislatorInfo[0];
+        }
+    });
+
+    Template.legislatorInfo.rendered = function() {
+        ! function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (!d.getElementById(id)) {
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "//platform.twitter.com/widgets.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            }
+        }(document, "script", "twitter-wjs");
+    }
+
+
 }
 
 if (Meteor.isServer) {

@@ -85,6 +85,23 @@ table td {
 .step h3 {
     color: #f1c40f;
 }
+.legislators {
+    padding: 10px;
+}
+.legislators .legislator:nth-child(even) {
+    background: #9b59b6;
+}
+.legislators .legislator:nth-child(odd) {
+    background: #8e44ad;
+}
+.legislator {
+    color: white;
+    border: 1px solid;
+}
+.legislator h2 {
+    font-size: 20px;
+    font-family: Arial;
+}
 textarea {
     resize: none;
 }

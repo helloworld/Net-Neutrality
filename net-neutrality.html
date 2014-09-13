@@ -34,7 +34,7 @@
             <strong>Don't worry. We'll walk you right through it.</strong>
         </p>
 
-        {{>contactInfo}}
+        {{>contactInfo}} {{>legislatorInfo}}
 
         <div class="footer">
             <p>Thanks!</p>
@@ -57,4 +57,25 @@
         <br>
         <button type="button" id="submitContactInfo">Submit</button>
     </div>
+</template>
+
+<template name="legislatorInfo">
+    {{#if contactInfoSet}}
+    <div class="step">
+        <h3>Step 2- Contact your Representatives</h3>
+        {{#each legislator}}
+        <div class="legislators">
+            <div class="legislator">
+                {{first_name}} {{last_name}}
+                <a href="http://facebook.com/{{facebook_id}}" target="_blank">Go to his facebook </a>
+                <a href="https://twitter.com/intent/tweet?screen_name={{twitter_id}}&text=I%20think%20that%20you%20should%20support20%23NetNeutrality" class="twitter-mention-button">Tweet to @{{twitter_id}}</a>
+
+
+            </div>
+        </div>
+        {{/each}}
+
+    </div>
+
+    {{/if}}
 </template>
