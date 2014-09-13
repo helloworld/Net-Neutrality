@@ -1,14 +1,60 @@
 <head>
-  <title>net-neutrality</title>
+    <title>netneutrality</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
+    {{>home}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="home">
+    <div class="passage">
+        <div class="header">
+            <p>WE NEED YOUR HELP WITH</p>
+            <h1 class="heading">NET NUETRALITY</h1>
+        </div>
+        <h1 class="title">Introduction</h1>
+
+        <p>
+            <strong>What the Hell is Net Neutrality?</strong>
+        </p>
+
+        <p>This is a serious problem. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam molestiae mollitia dolorem odit nesciunt eum, magni perferendis facilis accusantium vel nemo itaque, corporis, reprehenderit perspiciatis necessitatibus placeat alias, quod unde! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur suscipit tempore praesentium et nesciunt optio nisi enim eaque, ipsa voluptatum inventore iste quia deleniti odit eos, placeat quam. Nostrum, odit.</p>
+
+        <h1 class="title">How can I help?</h1>
+
+        <p>
+            <strong>Contact your legislator.</strong>
+        </p>
+
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis modi voluptatibus minima aut maxime nam mollitia cumque vitae ducimus ipsum saepe facere sint perspiciatis possimus ut odio, ea quam asperiores?</p>
+
+        <h1 class="title">How do I do that?</h1>
+
+        <p>
+            <strong>Don't worry. We'll walk you right through it.</strong>
+        </p>
+
+        {{>contactInfo}}
+
+        <div class="footer">
+            <p>Thanks!</p>
+        </div>
+
+
+    </div>
+</template>
+
+<template name="contactInfo">
+    <div class="step">
+        <h3>Step 1 - Enter your information</h3>
+
+        <input type="text" id="firstName" placeholder="First Name">
+        <input type="text" id="lastName" placeholder="Last Name">
+        <br>
+        <textarea cols="48" id="streetAddress" placeholder="Street Address" resizable="disabled"></textarea>
+        <br>
+        <input type="text" id="zipCode" placeholder="Zip Code">
+        <br>
+        <button type="button" id="submitContactInfo">Submit</button>
+    </div>
 </template>
