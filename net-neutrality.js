@@ -1,4 +1,8 @@
+Advocates = new Meteor.Collection('advocates');
+
 if (Meteor.isClient) {
+
+    advocatesSub = Meteor.subscribe('advocates');
 
     Router.configure({
         layoutTemplate: 'layout',
@@ -23,15 +27,12 @@ if (Meteor.isClient) {
 
     Template.contactInfo.events({
         'click #submitContactInfo': function() {
-            // firstName = $("#firstName").val();
-            // lastName = $("#lastName").val();
-            // streetAddress = $("#streetAddress").val();
-            // zipCode = $("#zipCode").val();
+            firstName = $("#firstName").val();
+            lastName = $("#lastName").val();
+            streetAddress = $("#streetAddress").val();
+            zipCode = $("#zipCode").val();
+            phoneNumber = $("#phoneNumber").val();
 
-            firstName = "sad"
-            lastName = "sdf"
-            streetAddress = "13141 Rose Petal Cir"
-            zipCode = "20171"
 
 
             var contact = {};
@@ -39,6 +40,7 @@ if (Meteor.isClient) {
             contact["lastName"] = lastName;
             contact["streetAddress"] = streetAddress;
             contact["zipCode"] = zipCode;
+            contact["phoneNumber"] = phoneNumber;
 
 
             Meteor.call('convertStreetAddress', streetAddress, function(e, r) {
@@ -102,12 +104,22 @@ if (Meteor.isClient) {
     }
 
 
+
+
 }
 
 if (Meteor.isServer) {
 
     Meteor.startup(function() {
         process.env.MAIL_URL = 'smtp://userName:passWord@smtp.sendgrid.net:587';
+    });
+
+    Meteor.publish('advocates', function() {
+        return Advocates.find({}, {
+            sort: {
+                created_at: 1
+            }
+        });
     });
 
     Router.map(function() {

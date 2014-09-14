@@ -82,7 +82,7 @@ table td {
     border: 1px solid;
     padding: 10px;
 }
-.step h3 {
+.takeAction > h3 {
     color: #f1c40f;
 }
 .legislators {
@@ -114,4 +114,7 @@ textarea {
 }
 .footer p {
     font-weight: bold;
+}
+.panel-body p {
+    margin-bottom: 0px;
 }
