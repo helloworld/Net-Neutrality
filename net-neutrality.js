@@ -24,7 +24,6 @@ if (Meteor.isClient) {
         };
     });
 
-
     Template.contactInfo.events({
         'click #submitContactInfo': function() {
             firstName = $("#firstName").val();
@@ -33,15 +32,12 @@ if (Meteor.isClient) {
             zipCode = $("#zipCode").val();
             phoneNumber = $("#phoneNumber").val();
 
-
-
             var contact = {};
             contact["firstName"] = firstName;
             contact["lastName"] = lastName;
             contact["streetAddress"] = streetAddress;
             contact["zipCode"] = zipCode;
             contact["phoneNumber"] = phoneNumber;
-
 
             Meteor.call('convertStreetAddress', streetAddress, function(e, r) {
                 locationObject = r;
@@ -110,11 +106,8 @@ if (Meteor.isClient) {
             }
         }(document, "script", "twitter-wjs");
     }
-
-
-
-
 }
+//END OF CLIENT
 
 if (Meteor.isServer) {
 
@@ -154,6 +147,7 @@ if (Meteor.isServer) {
         convertStreetAddress: function(streetAddress) {
             var GOOGLEAPIKEY = "KEY";
             var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + streetAddress + "&key=" + GOOGLEAPIKEY;
+            
             //synchronous GET
             var result = HTTP.call("GET", url);
 
@@ -165,12 +159,12 @@ if (Meteor.isServer) {
         fetchDistrictsFromService: function(locationObject) {
             var CONGRESSAPIKEY = "KEY";
             var url = "https://congress.api.sunlightfoundation.com/legislators/locate?latitude=" + locationObject.lat + "&longitude=" + locationObject.lng + "&apikey=" + CONGRESSAPIKEY;
+            
             //synchronous GET
             var result = HTTP.call("GET", url);
 
             toEval = "var x=" + result.content;
             eval(toEval);
-            console.log(x, x.results, x.count);
             return [x.results, x.count];
         },
         sendMessage: function() {
@@ -193,10 +187,6 @@ if (Meteor.isServer) {
             ACCOUNT_SID = "KEY";
             AUTH_TOKEN = "KEY";
 
-            console.log("PHONELKJS DLKFJ " + phone);
-
-            console.log("neutral.meteor.com/legislators/" + phone + "/" + chamber + "/" + firstName + "/" + lastName + "/" + state);
-
             var result = Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/' + ACCOUNT_SID + '/Calls/', {
                 params: {
                     From: "2027602988",
@@ -208,8 +198,6 @@ if (Meteor.isServer) {
             }, function(e, r) {
                 console.log(e, r);
             });
-
-            console.log("end")
 
             return result;
         },
@@ -224,3 +212,4 @@ if (Meteor.isServer) {
         }
     });
 }
+//END OF SERVER
