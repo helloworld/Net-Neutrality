@@ -79,6 +79,8 @@ if (Meteor.isClient) {
             Meteor.call("placeCall", phone, firstName, lastName, state, chamber, user, function(e, r) {
                 console.log(r);
             });
+
+            alert("Call being placed. Check your phone!");
         },
         'click #email': function(event) {
             var domEl = event.currentTarget;
