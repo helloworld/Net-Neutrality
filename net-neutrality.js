@@ -72,7 +72,11 @@ if (Meteor.isClient) {
             var lastName = $(domEl).attr("data-lastName");
             var state = $(domEl).attr("data-state");
             var chamber = $(domEl).attr("data-chamber");
-            Meteor.call("placeCall", phone, firstName, lastName, state, chamber, function(e, r) {
+            var user = Session.get("contactInfo")
+
+            $(domEl).prop('disabled', true);
+
+            Meteor.call("placeCall", phone, firstName, lastName, state, chamber, user, function(e, r) {
                 console.log(r);
             });
         },
@@ -86,7 +90,9 @@ if (Meteor.isClient) {
 
             Meteor.call("sendEmail", email, firstName, lastName, user, message, function(e, r) {
                 console.log(r);
-            })
+            });
+
+            alert("Email Sent!");
         }
 
     });
@@ -180,9 +186,9 @@ if (Meteor.isServer) {
 
             return result;
         },
-        placeCall: function(phone, firstName, lastName, state, chamber) {
             ACCOUNT_SID = "KEY";
             AUTH_TOKEN = "KEY";
+        placeCall: function(phone, firstName, lastName, state, chamber, user) {
 
             console.log("PHONELKJS DLKFJ " + phone);
 
@@ -191,7 +197,7 @@ if (Meteor.isServer) {
             var result = Meteor.http.post('https://api.twilio.com/2010-04-01/Accounts/' + ACCOUNT_SID + '/Calls/', {
                 params: {
                     From: "2027602988",
-                    To: "7034624169",
+                    To: user.phoneNumber,
                     Url: "http://neutral.meteor.com/legislators/" + phone + "/" + chamber + "/" + firstName + "/" + lastName + "/" + state
                 },
                 auth: ACCOUNT_SID + ":" + AUTH_TOKEN
