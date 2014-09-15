@@ -186,9 +186,10 @@ if (Meteor.isServer) {
 
             return result;
         },
+
+        placeCall: function(phone, firstName, lastName, state, chamber, user) {
             ACCOUNT_SID = "KEY";
             AUTH_TOKEN = "KEY";
-        placeCall: function(phone, firstName, lastName, state, chamber, user) {
 
             console.log("PHONELKJS DLKFJ " + phone);
 
